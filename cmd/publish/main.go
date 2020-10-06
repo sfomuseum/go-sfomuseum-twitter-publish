@@ -3,10 +3,12 @@ package main
 import (
 	"context"
 	"flag"
+	"github.com/sfomuseum/go-sfomuseum-export"
 	"github.com/sfomuseum/go-sfomuseum-twitter"
 	"github.com/sfomuseum/go-sfomuseum-twitter-publish"
 	"github.com/sfomuseum/go-sfomuseum-twitter/walk"
 	"github.com/whosonfirst/go-reader"
+	_ "github.com/whosonfirst/go-whosonfirst-export/options"
 	"github.com/whosonfirst/go-writer"
 	_ "gocloud.dev/blob/fileblob"
 	"log"
@@ -54,10 +56,23 @@ func main() {
 		log.Fatal(err)
 	}
 
+	exprtr_opts, err := export.NewDefaultOptions()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	exprtr, err := export.NewSFOMuseumExporter(exprtr_opts)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	publish_opts := &publish.PublishOptions{
-		Lookup: lookup,
-		Reader: rdr,
-		Writer: wrtr,
+		Lookup:   lookup,
+		Reader:   rdr,
+		Writer:   wrtr,
+		Exporter: exprtr,
 	}
 
 	cb := func(ctx context.Context, body []byte) error {
