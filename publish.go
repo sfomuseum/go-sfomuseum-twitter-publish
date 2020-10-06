@@ -3,14 +3,14 @@ package publish
 import (
 	"context"
 	"errors"
-	"io/ioutil"
-	"log"
 	"github.com/sfomuseum/go-sfomuseum-twitter/document"
-	"github.com/whosonfirst/go-reader"
-	"github.com/whosonfirst/go-writer"
-	"github.com/whosonfirst/go-whosonfirst-uri"		
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
+	"github.com/whosonfirst/go-reader"
+	"github.com/whosonfirst/go-whosonfirst-uri"
+	"github.com/whosonfirst/go-writer"
+	"io/ioutil"
+	"log"
 	"sync"
 )
 
@@ -42,20 +42,20 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 	if err != nil {
 		return nil
 	}
-	
+
 	pointer, ok := opts.Lookup.Load(tweet_id)
 
 	var wof_record []byte
-	
+
 	if ok {
-		
+
 		wof_id := pointer.(int64)
 		rel_path, err := uri.Id2RelPath(wof_id)
 
 		if err != nil {
 			return err
 		}
-		
+
 		wof_fh, err := opts.Reader.Read(ctx, rel_path)
 
 		if err != nil {
@@ -71,7 +71,7 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 		}
 
 		wof_record = wof_body
-		
+
 	} else {
 
 		new_record, err := newWOFRecord(ctx)
@@ -88,12 +88,12 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 	if err != nil {
 		return err
 	}
-		
+
 	log.Println(string(tweet_body))
 	return nil
 }
 
-func newWOFRecord(ctx context.Context) ([]byte, error){
+func newWOFRecord(ctx context.Context) ([]byte, error) {
 
 	return nil, errors.New("Not implemented")
 }
