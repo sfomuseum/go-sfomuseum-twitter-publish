@@ -21,7 +21,7 @@ func main() {
 	trim_prefix := flag.Bool("trim-prefix", true, "Trim default tweet.js JavaScript prefix.")
 
 	reader_uri := flag.String("reader-uri", "", "A valid whosonfirst/go-reader URI")
-	writer_uri := flag.String("reader-uri", "", "A valid whosonfirst/go-writer URI")
+	writer_uri := flag.String("writer-uri", "", "A valid whosonfirst/go-writer URI")
 
 	flag.Parse()
 
@@ -75,7 +75,21 @@ func main() {
 		Exporter: exprtr,
 	}
 
+	max_procs := 10
+	throttle := make(chan bool, max_procs)
+
+	for i := 0; i < max_procs; i++ {
+		throttle <- true
+	}
+
 	cb := func(ctx context.Context, body []byte) error {
+
+		<-throttle
+
+		defer func() {
+			throttle <- true
+		}()
+
 		return publish.PublishTweet(ctx, publish_opts, body)
 	}
 
