@@ -6,13 +6,12 @@ import (
 )
 
 type PublishOptions struct {
-
 }
 
 func PublishTweet(ctx context.Context, opts *PublishOptions, tweet []byte) error {
 
 	select {
-	case <- ctx.Done():
+	case <-ctx.Done():
 		return nil
 	default:
 		// pass

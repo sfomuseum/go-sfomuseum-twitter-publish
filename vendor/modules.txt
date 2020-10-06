@@ -8,7 +8,8 @@ github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/timestamp
 # github.com/googleapis/gax-go v2.0.2+incompatible
 github.com/googleapis/gax-go
-# github.com/sfomuseum/go-sfomuseum-twitter v0.0.2
+# github.com/sfomuseum/go-sfomuseum-twitter v0.0.3
+github.com/sfomuseum/go-sfomuseum-twitter
 github.com/sfomuseum/go-sfomuseum-twitter/walk
 # go.opencensus.io v0.22.3
 go.opencensus.io

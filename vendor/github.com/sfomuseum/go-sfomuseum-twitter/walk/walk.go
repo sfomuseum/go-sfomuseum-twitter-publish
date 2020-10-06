@@ -3,46 +3,72 @@ package walk
 import (
 	"context"
 	"encoding/json"
-	"fmt"
-	"gocloud.dev/blob"
-	"path/filepath"
+	"io"
+	"sync"
 )
-
-type WalkCallbackFunc func(context.Context, []byte) error
 
 type WalkOptions struct {
 	TweetChannel chan []byte
 	ErrorChannel chan error
 	DoneChannel  chan bool
-	Callback     WalkCallbackFunc
 }
 
-func WalkTweets(ctx context.Context, opts *WalkOptions, tweets_uri string) {
+type WalkTweetsCallbackFunc func(ctx context.Context, tweet []byte) error
+
+func WalkTweetsWithCallback(ctx context.Context, tweets_fh io.Reader, cb WalkTweetsCallbackFunc) error {
+
+	err_ch := make(chan error)
+	tweet_ch := make(chan []byte)
+	done_ch := make(chan bool)
+
+	walk_opts := &WalkOptions{
+		DoneChannel:  done_ch,
+		ErrorChannel: err_ch,
+		TweetChannel: tweet_ch,
+	}
+
+	go WalkTweets(ctx, walk_opts, tweets_fh)
+
+	working := true
+	wg := new(sync.WaitGroup)
+
+	for {
+		select {
+		case <-done_ch:
+			working = false
+		case err := <-err_ch:
+			return err
+		case body := <-tweet_ch:
+
+			wg.Add(1)
+
+			go func() {
+
+				defer wg.Done()
+
+				err := cb(ctx, body)
+
+				if err != nil {
+					err_ch <- err
+				}
+			}()
+
+		}
+
+		if !working {
+			break
+		}
+	}
+
+	wg.Wait()
+	return nil
+}
+
+func WalkTweets(ctx context.Context, opts *WalkOptions, tweets_fh io.Reader) {
 
 	defer func() {
 		opts.DoneChannel <- true
 	}()
-
-	tweets_fname := filepath.Base(tweets_uri)
-	tweets_root := filepath.Dir(tweets_uri)
-
-	tweets_bucket, err := blob.OpenBucket(ctx, tweets_root)
-
-	if err != nil {
-		opts.ErrorChannel <- fmt.Errorf("Failed to open %s, %v", tweets_root, err)
-		return
-	}
-
-	tweets_fh, err := tweets_bucket.NewReader(ctx, tweets_fname, nil)
-
-	if err != nil {
-		opts.ErrorChannel <- fmt.Errorf("Failed to open %s, %v", tweets_fname, err)
-		return
-	}
-
-	defer tweets_fh.Close()
-
-	// Add hooks to trim leading JS stuff here (see also: cmd/trim)
 
 	type post struct {
 		Tweet interface{} `json:"tweet"`
@@ -51,7 +77,7 @@ func WalkTweets(ctx context.Context, opts *WalkOptions, tweets_uri string) {
 	var posts []post
 
 	dec := json.NewDecoder(tweets_fh)
-	err = dec.Decode(&posts)
+	err := dec.Decode(&posts)
 
 	if err != nil {
 		opts.ErrorChannel <- err

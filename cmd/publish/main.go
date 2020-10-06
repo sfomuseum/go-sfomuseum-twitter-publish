@@ -2,17 +2,19 @@ package main
 
 import (
 	"context"
-	"github.com/sfomuseum/go-sfomuseum-twitter/walk"
-	"github.com/sfomuseum/go-sfomuseum-twitter-publish"	
-	_ "gocloud.dev/blob/fileblob"
 	"flag"
+	"github.com/sfomuseum/go-sfomuseum-twitter"
+	"github.com/sfomuseum/go-sfomuseum-twitter-publish"
+	"github.com/sfomuseum/go-sfomuseum-twitter/walk"
+	_ "gocloud.dev/blob/fileblob"
 	"log"
 )
 
 func main() {
 
-	tweets_uri := flag.String("tweets", "", "")
-	
+	tweets_uri := flag.String("tweets-uri", "", "A valid gocloud.dev/blob URI to your `tweets.js` file.")
+	trim_prefix := flag.Bool("trim-prefix", true, "Trim default tweet.js JavaScript prefix.")
+
 	flag.Parse()
 
 	ctx := context.Background()
@@ -20,42 +22,28 @@ func main() {
 
 	defer cancel()
 
-	publish_opts := &publish.PublishOptions{
+	open_opts := &twitter.OpenTweetsOptions{
+		TrimPrefix: *trim_prefix,
 	}
-	
-	err_ch := make(chan error)
-	tweet_ch := make(chan []byte)
-	done_ch := make(chan bool)
 
-	walk_opts := &walk.WalkOptions{
-		DoneChannel: done_ch,
-		ErrorChannel: err_ch,
-		TweetChannel: tweet_ch,
+	tweets_fh, err := twitter.OpenTweets(ctx, *tweets_uri, open_opts)
+
+	if err != nil {
+		log.Fatalf("Failed to open %s, %v", *tweets_uri, err)
 	}
-	
-	go walk.WalkTweets(ctx, walk_opts, *tweets_uri,)
 
-	working := true
-	
-	for {
-		select {
-		case <- done_ch:
-			working = false
-		case err := <- err_ch:
-			log.Println(err)
-			cancel()
-		case body := <- tweet_ch:
+	defer tweets_fh.Close()
 
-			err := publish.PublishTweet(ctx, publish_opts, body)
+	publish_opts := &publish.PublishOptions{}
 
-			if err != nil {
-				err_ch <- err
-			}
-		}
-		
-		if !working {
-			break
-		}
+	cb := func(ctx context.Context, body []byte) error {
+		return publish.PublishTweet(ctx, publish_opts, body)
 	}
-	
+
+	err = walk.WalkTweetsWithCallback(ctx, tweets_fh, cb)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }
