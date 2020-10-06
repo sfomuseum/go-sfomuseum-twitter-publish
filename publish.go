@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	sfom_reader "github.com/sfomuseum/go-sfomuseum-reader"
 	"github.com/sfomuseum/go-sfomuseum-twitter/document"
 	sfom_writer "github.com/sfomuseum/go-sfomuseum-writer"
@@ -97,7 +98,8 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 		}
 	}
 
-	wof_record, err = sjson.SetBytes(wof_record, "properties.wof:name", "FIX ME")
+	wof_name := fmt.Sprintf("Twitter message #%d", tweet_id)
+	wof_record, err = sjson.SetBytes(wof_record, "properties.wof:name", wof_name)
 
 	if err != nil {
 		return err
@@ -141,26 +143,42 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 
 func newWOFRecord(ctx context.Context) ([]byte, error) {
 
-	// Null Terminal
+	// Null Terminal - please read these details from source...
 	// https://raw.githubusercontent.com/sfomuseum-data/sfomuseum-data-architecture/master/data/115/916/086/9/1159160869.geojson
 
+	parent_id := 1159160869
+	
 	lat := 37.616356
 	lon := -122.386166
 
+	hier := map[string]interface{}{
+				"building_id":1159160869,
+				"campus_id":102527513,
+				"continent_id":102191575,
+				"country_id":85633793,
+				"county_id":102087579,
+				"locality_id":85922583,
+				"neighbourhood_id":-1,
+				"region_id":85688637,
+	}
+	
+	geom := map[string]interface{}{
+			"type":        "Point",
+			"coordinates": [2]float64{lon, lat},
+	}
+	
 	feature := map[string]interface{}{
 		"type": "Feature",
 		"properties": map[string]interface{}{
 			"sfomuseum:placetype": "tweet",
 			"src:geom":            "sfomuseum",
 			"wof:country":         "US",
-			"wof:parent_id":       1159160869,
+			"wof:parent_id":       parent_id,
 			"wof:placetype":       "custom",
 			"wof:repo":            "sfomuseum-data-twitter",
+			"wof:hierarchy": hier,
 		},
-		"geometry": map[string]interface{}{
-			"type":        "Point",
-			"coordinates": [2]float64{lon, lat},
-		},
+		"geometry": geom,
 	}
 
 	return json.Marshal(feature)
