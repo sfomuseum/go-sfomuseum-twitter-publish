@@ -4,14 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	sfom_reader "github.com/sfomuseum/go-sfomuseum-reader"
 	"github.com/sfomuseum/go-sfomuseum-twitter/document"
+	sfom_writer "github.com/sfomuseum/go-sfomuseum-writer"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 	"github.com/whosonfirst/go-reader"
 	"github.com/whosonfirst/go-whosonfirst-export/exporter"
-	"github.com/whosonfirst/go-whosonfirst-uri"
 	"github.com/whosonfirst/go-writer"
-	"io/ioutil"
 	"log"
 	"sync"
 )
@@ -53,21 +53,8 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 	if ok {
 
 		wof_id := pointer.(int64)
-		rel_path, err := uri.Id2RelPath(wof_id)
 
-		if err != nil {
-			return err
-		}
-
-		wof_fh, err := opts.Reader.Read(ctx, rel_path)
-
-		if err != nil {
-			return err
-		}
-
-		defer wof_fh.Close()
-
-		wof_body, err := ioutil.ReadAll(wof_fh)
+		wof_body, err := sfom_reader.LoadBytesFromID(ctx, opts.Reader, wof_id)
 
 		if err != nil {
 			return err
@@ -110,7 +97,13 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 		return err
 	}
 
-	log.Println(string(tweet_body))
+	id, err := sfom_writer.WriteFeatureBytes(ctx, opts.Writer, wof_record)
+
+	if err != nil {
+		return err
+	}
+
+	log.Printf("Wrote %d\n", id)
 	return nil
 }
 
