@@ -14,6 +14,7 @@ import (
 	"github.com/whosonfirst/go-writer"
 	"log"
 	"sync"
+	"time"
 )
 
 type PublishOptions struct {
@@ -38,7 +39,7 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 		return errors.New("Missing 'id' property")
 	}
 
-	tweet_id := id_rsp.String()
+	tweet_id := id_rsp.Int()
 
 	tweet_body, err := document.AppendCreatedAtTimestamp(ctx, body)
 
@@ -71,6 +72,29 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 		}
 
 		wof_record = new_record
+
+		created_rsp := gjson.GetBytes(tweet_body, "created")
+
+		if !created_rsp.Exists() {
+			return errors.New("Missing created timestamp")
+		}
+
+		created_ts := created_rsp.Int()
+		created_t := time.Unix(created_ts, 0)
+
+		edtf_t := created_t.Format(time.RFC3339)
+
+		wof_record, err = sjson.SetBytes(wof_record, "properties.edtf:inception", edtf_t)
+
+		if err != nil {
+			return err
+		}
+
+		wof_record, err = sjson.SetBytes(wof_record, "properties.edtf:cessation", edtf_t)
+
+		if err != nil {
+			return err
+		}
 	}
 
 	wof_record, err = sjson.SetBytes(wof_record, "properties.wof:name", "FIX ME")
@@ -79,13 +103,21 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 		return err
 	}
 
-	wof_record, err = sjson.SetBytes(wof_record, "properties.concordances.twitter:id", tweet_id)
+	wof_record, err = sjson.SetBytes(wof_record, "properties.wof:concordances.twitter:id", tweet_id)
 
 	if err != nil {
 		return err
 	}
 
-	wof_record, err = sjson.SetBytes(wof_record, "properties.tweet", tweet_body)
+	var tw interface{}
+
+	err = json.Unmarshal(tweet_body, &tw)
+
+	if err != nil {
+		return err
+	}
+
+	wof_record, err = sjson.SetBytes(wof_record, "properties.twitter:tweet", tw)
 
 	if err != nil {
 		return err
@@ -109,16 +141,25 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 
 func newWOFRecord(ctx context.Context) ([]byte, error) {
 
+	// Null Terminal
+	// https://raw.githubusercontent.com/sfomuseum-data/sfomuseum-data-architecture/master/data/115/916/086/9/1159160869.geojson
+
+	lat := 37.616356
+	lon := -122.386166
+
 	feature := map[string]interface{}{
 		"type": "Feature",
 		"properties": map[string]interface{}{
 			"sfomuseum:placetype": "tweet",
+			"src:geom":            "sfomuseum",
 			"wof:country":         "US",
+			"wof:parent_id":       1159160869,
 			"wof:placetype":       "custom",
+			"wof:repo":            "sfomuseum-data-twitter",
 		},
 		"geometry": map[string]interface{}{
 			"type":        "Point",
-			"coordinates": [2]float64{0.0, 0.0},
+			"coordinates": [2]float64{lon, lat},
 		},
 	}
 
