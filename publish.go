@@ -154,15 +154,17 @@ func newWOFRecord(ctx context.Context) ([]byte, error) {
 	lat := 37.616356
 	lon := -122.386166
 
-	hier := map[string]interface{}{
-		"building_id":      1159160869,
-		"campus_id":        102527513,
-		"continent_id":     102191575,
-		"country_id":       85633793,
-		"county_id":        102087579,
-		"locality_id":      85922583,
-		"neighbourhood_id": -1,
-		"region_id":        85688637,
+	hier := []map[string]interface{}{
+		{
+			"building_id":      1159160869,
+			"campus_id":        102527513,
+			"continent_id":     102191575,
+			"country_id":       85633793,
+			"county_id":        102087579,
+			"locality_id":      85922583,
+			"neighbourhood_id": -1,
+			"region_id":        85688637,
+		},
 	}
 
 	geom := map[string]interface{}{
