@@ -59,7 +59,7 @@ github.com/sfomuseum/go-sfomuseum-export/properties
 github.com/sfomuseum/go-sfomuseum-geojson/feature
 # github.com/sfomuseum/go-sfomuseum-reader v0.0.0-20201006223747-80bcf386c7f8
 github.com/sfomuseum/go-sfomuseum-reader
-# github.com/sfomuseum/go-sfomuseum-twitter v0.0.3
+# github.com/sfomuseum/go-sfomuseum-twitter v0.0.4
 github.com/sfomuseum/go-sfomuseum-twitter
 github.com/sfomuseum/go-sfomuseum-twitter/document
 github.com/sfomuseum/go-sfomuseum-twitter/walk

@@ -9,13 +9,15 @@ import (
 	_ "github.com/whosonfirst/go-whosonfirst-index/fs"
 	"io"
 	"io/ioutil"
-	"log"
+	_ "log"
 	"sync"
+	"sync/atomic"
 )
 
 func BuildLookup(ctx context.Context, indexer_uri string, indexer_path string) (*sync.Map, error) {
 
 	lookup := new(sync.Map)
+	count := int32(0)
 
 	indexer_cb := func(ctx context.Context, fh io.Reader, args ...interface{}) error {
 
@@ -33,7 +35,7 @@ func BuildLookup(ctx context.Context, indexer_uri string, indexer_path string) (
 
 		wof_id := wof_rsp.Int()
 
-		tweet_rsp := gjson.GetBytes(body, "properties.wof:concordances.twitter:id")
+		tweet_rsp := gjson.GetBytes(body, "properties.twitter:tweet.id")
 
 		if !tweet_rsp.Exists() {
 			return fmt.Errorf("Missing Twitter ID for record %d", wof_id)
@@ -41,8 +43,9 @@ func BuildLookup(ctx context.Context, indexer_uri string, indexer_path string) (
 
 		tweet_id := tweet_rsp.Int()
 
-		log.Println("Store", tweet_id, wof_id)
 		lookup.Store(tweet_id, wof_id)
+
+		atomic.AddInt32(&count, 1)
 		return nil
 	}
 

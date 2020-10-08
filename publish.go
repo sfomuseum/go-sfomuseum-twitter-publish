@@ -57,9 +57,6 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 
 	pointer, ok := opts.Lookup.Load(tweet_id)
 
-	log.Println(tweet_id, pointer, ok)
-	return nil
-
 	var wof_record []byte
 
 	if ok {
@@ -115,11 +112,15 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 		return err
 	}
 
-	wof_record, err = sjson.SetBytes(wof_record, "properties.wof:concordances.twitter:id", tweet_id)
+	// why does this keep getting set incorrectly...
 
-	if err != nil {
-		return err
-	}
+	/*
+		wof_record, err = sjson.SetBytes(wof_record, "properties.wof:concordances.twitter:id", tweet_id)
+
+		if err != nil {
+			return err
+		}
+	*/
 
 	var tw interface{}
 

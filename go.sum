@@ -242,6 +242,8 @@ github.com/sfomuseum/go-sfomuseum-twitter v0.0.2 h1:5Kzozd8T0wOrpNVyEOwIgyBgp4qS
 github.com/sfomuseum/go-sfomuseum-twitter v0.0.2/go.mod h1:WjFpFH2uBOBxFH0D67l4PVRbYbYbT0HAOh6fvTH9kYE=
 github.com/sfomuseum/go-sfomuseum-twitter v0.0.3 h1:UOLRkR6dhSmOgsmlXH5qfVy0PGubDiIDYx4zeOSX3+w=
 github.com/sfomuseum/go-sfomuseum-twitter v0.0.3/go.mod h1:T/FPVDXZXq2vui24CiNyDfPTk4k/49h+fVdM1X00IF4=
+github.com/sfomuseum/go-sfomuseum-twitter v0.0.4 h1:sGOGEuWnmN/h17WVyaMCtRE/WWN0K6r3OVEfJXu4g8I=
+github.com/sfomuseum/go-sfomuseum-twitter v0.0.4/go.mod h1:T/FPVDXZXq2vui24CiNyDfPTk4k/49h+fVdM1X00IF4=
 github.com/sfomuseum/go-sfomuseum-writer v0.0.0-20191203235619-d4f5a71840b4 h1:ZmyFeMVEmkDUGXbwwgmONDll068h+GK9nv4OSc6cpyM=
 github.com/sfomuseum/go-sfomuseum-writer v0.0.0-20191203235619-d4f5a71840b4/go.mod h1:fktVlo2Ps7iikOb9h6LHf87MI4xUv4r8QNekRJXe7Jo=
 github.com/sfomuseum/go-sfomuseum-writer v0.0.0-20201006223711-bde90c768e44 h1:NBJp8Km9A7cScjaIQM+hvzPpV/g+QQf9rU4aCcYE+18=
