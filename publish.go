@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
+	_ "fmt"
 	sfom_reader "github.com/sfomuseum/go-sfomuseum-reader"
 	"github.com/sfomuseum/go-sfomuseum-twitter/document"
 	sfom_writer "github.com/sfomuseum/go-sfomuseum-writer"
@@ -40,7 +40,14 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 		return errors.New("Missing 'id' property")
 	}
 
+	text_rsp := gjson.GetBytes(body, "full_text")
+
+	if !text_rsp.Exists() {
+		return errors.New("Missing 'full_text' property")
+	}
+
 	tweet_id := id_rsp.Int()
+	full_text := text_rsp.String()
 
 	tweet_body, err := document.AppendCreatedAtTimestamp(ctx, body)
 
@@ -101,7 +108,7 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 		}
 	}
 
-	wof_name := fmt.Sprintf("Twitter message #%d", tweet_id)
+	wof_name := full_text // fmt.Sprintf("Twitter message #%d", tweet_id)
 	wof_record, err = sjson.SetBytes(wof_record, "properties.wof:name", wof_name)
 
 	if err != nil {
