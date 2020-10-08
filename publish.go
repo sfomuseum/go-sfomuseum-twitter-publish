@@ -50,6 +50,9 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 
 	pointer, ok := opts.Lookup.Load(tweet_id)
 
+	log.Println(tweet_id, pointer, ok)
+	return nil
+
 	var wof_record []byte
 
 	if ok {
@@ -147,26 +150,26 @@ func newWOFRecord(ctx context.Context) ([]byte, error) {
 	// https://raw.githubusercontent.com/sfomuseum-data/sfomuseum-data-architecture/master/data/115/916/086/9/1159160869.geojson
 
 	parent_id := 1159160869
-	
+
 	lat := 37.616356
 	lon := -122.386166
 
 	hier := map[string]interface{}{
-				"building_id":1159160869,
-				"campus_id":102527513,
-				"continent_id":102191575,
-				"country_id":85633793,
-				"county_id":102087579,
-				"locality_id":85922583,
-				"neighbourhood_id":-1,
-				"region_id":85688637,
+		"building_id":      1159160869,
+		"campus_id":        102527513,
+		"continent_id":     102191575,
+		"country_id":       85633793,
+		"county_id":        102087579,
+		"locality_id":      85922583,
+		"neighbourhood_id": -1,
+		"region_id":        85688637,
 	}
-	
+
 	geom := map[string]interface{}{
-			"type":        "Point",
-			"coordinates": [2]float64{lon, lat},
+		"type":        "Point",
+		"coordinates": [2]float64{lon, lat},
 	}
-	
+
 	feature := map[string]interface{}{
 		"type": "Feature",
 		"properties": map[string]interface{}{
@@ -176,7 +179,7 @@ func newWOFRecord(ctx context.Context) ([]byte, error) {
 			"wof:parent_id":       parent_id,
 			"wof:placetype":       "custom",
 			"wof:repo":            "sfomuseum-data-twitter",
-			"wof:hierarchy": hier,
+			"wof:hierarchy":       hier,
 		},
 		"geometry": geom,
 	}

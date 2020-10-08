@@ -11,14 +11,17 @@ import (
 	_ "github.com/whosonfirst/go-whosonfirst-export/options"
 	"github.com/whosonfirst/go-writer"
 	_ "gocloud.dev/blob/fileblob"
+
 	"log"
-	"sync"
 )
 
 func main() {
 
 	tweets_uri := flag.String("tweets-uri", "", "A valid gocloud.dev/blob URI to your `tweets.js` file.")
 	trim_prefix := flag.Bool("trim-prefix", true, "Trim default tweet.js JavaScript prefix.")
+
+	indexer_uri := flag.String("indexer-uri", "git://", "A valid whosonfirst/go-whosonfirst-index URI")
+	indexer_path := flag.String("indexer-path", "git@github.com:sfomuseum-data/sfomuseum-data-twitter.git", "...")
 
 	reader_uri := flag.String("reader-uri", "", "A valid whosonfirst/go-reader URI")
 	writer_uri := flag.String("writer-uri", "", "A valid whosonfirst/go-writer URI")
@@ -42,8 +45,6 @@ func main() {
 
 	defer tweets_fh.Close()
 
-	lookup := new(sync.Map)
-
 	rdr, err := reader.NewReader(ctx, *reader_uri)
 
 	if err != nil {
@@ -66,6 +67,12 @@ func main() {
 
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	lookup, err := publish.BuildLookup(ctx, *indexer_uri, *indexer_path)
+
+	if err != nil {
+		log.Fatalf("Failed to build lookup, %v", err)
 	}
 
 	publish_opts := &publish.PublishOptions{

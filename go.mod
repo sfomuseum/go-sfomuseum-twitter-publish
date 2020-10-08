@@ -11,6 +11,8 @@ require (
 	github.com/tidwall/sjson v1.1.2
 	github.com/whosonfirst/go-reader v0.2.0
 	github.com/whosonfirst/go-whosonfirst-export v0.3.3
+	github.com/whosonfirst/go-whosonfirst-index v0.3.2
+	github.com/whosonfirst/go-whosonfirst-index-git v0.0.5
 	github.com/whosonfirst/go-whosonfirst-uri v0.2.0 // indirect
 	github.com/whosonfirst/go-writer v0.2.0
 	gocloud.dev v0.20.0
