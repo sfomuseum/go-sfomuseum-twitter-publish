@@ -188,7 +188,7 @@ func newWOFRecord(ctx context.Context) ([]byte, error) {
 			"wof:country":         "US",
 			"wof:parent_id":       parent_id,
 			"wof:placetype":       "custom",
-			"wof:repo":            "sfomuseum-data-twitter",
+			"wof:repo":            "sfomuseum-data-socialmedia-twitter",
 			"wof:hierarchy":       hier,
 		},
 		"geometry": geom,
