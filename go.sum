@@ -76,6 +76,8 @@ github.com/aaronland/go-brooklynintegers-api v1.0.1/go.mod h1:aZ4tIFeMdAQRSLZYfG
 github.com/aaronland/go-brooklynintegers-api v1.0.2/go.mod h1:JlR7i6vciy3W0aMnid7cN/Ls9Pz/vaq1lNj9sCENQf0=
 github.com/aaronland/go-brooklynintegers-api v1.1.0 h1:eyoSZjn3Qiy79H+1rG/HtkEShNBZkPUWs4YKpFWkuD8=
 github.com/aaronland/go-brooklynintegers-api v1.1.0/go.mod h1:agceH8JW8PcdHGCyKEDmOntccB3m7xUKrUejHpxAs6U=
+github.com/aaronland/go-json-query v0.0.2 h1:cKw/DnxtGaPsClb78ONgmXPOJkqHhaBMU2RTBbPoXos=
+github.com/aaronland/go-json-query v0.0.2/go.mod h1:dGc7y824R93ugQMTldL7PFD/SPVGPwKdqrUJFLE/ILU=
 github.com/aaronland/go-londonintegers-api v0.1.0/go.mod h1:E0VIcwks+So4FL1FYAQzrO5/OVOUsFPsqW85UrZArSE=
 github.com/aaronland/go-missionintegers-api v0.1.0/go.mod h1:LZEM5+MkPX5RehLxTEv+3Y3cqMSYEk86qBa+aVecnKw=
 github.com/aaronland/go-missionintegers-api v0.1.1/go.mod h1:CvByrizvklOxK6QD+Z4RNqACxHqqVjiB/GdWQfrB4Mc=
@@ -244,6 +246,8 @@ github.com/sfomuseum/go-sfomuseum-twitter v0.0.3 h1:UOLRkR6dhSmOgsmlXH5qfVy0PGub
 github.com/sfomuseum/go-sfomuseum-twitter v0.0.3/go.mod h1:T/FPVDXZXq2vui24CiNyDfPTk4k/49h+fVdM1X00IF4=
 github.com/sfomuseum/go-sfomuseum-twitter v0.0.4 h1:sGOGEuWnmN/h17WVyaMCtRE/WWN0K6r3OVEfJXu4g8I=
 github.com/sfomuseum/go-sfomuseum-twitter v0.0.4/go.mod h1:T/FPVDXZXq2vui24CiNyDfPTk4k/49h+fVdM1X00IF4=
+github.com/sfomuseum/go-sfomuseum-twitter v0.1.0 h1:h+s8B8mvdEg79k0fOe3A1gwc3LR5a7Gn6fpjaMTWwvw=
+github.com/sfomuseum/go-sfomuseum-twitter v0.1.0/go.mod h1:RkdacM8ciRQsHyEMOle7QK4klONKZOtWPj1W37P7ZUw=
 github.com/sfomuseum/go-sfomuseum-writer v0.0.0-20191203235619-d4f5a71840b4 h1:ZmyFeMVEmkDUGXbwwgmONDll068h+GK9nv4OSc6cpyM=
 github.com/sfomuseum/go-sfomuseum-writer v0.0.0-20191203235619-d4f5a71840b4/go.mod h1:fktVlo2Ps7iikOb9h6LHf87MI4xUv4r8QNekRJXe7Jo=
 github.com/sfomuseum/go-sfomuseum-writer v0.0.0-20201006223711-bde90c768e44 h1:NBJp8Km9A7cScjaIQM+hvzPpV/g+QQf9rU4aCcYE+18=

@@ -100,7 +100,11 @@ func main() {
 		return publish.PublishTweet(ctx, publish_opts, body)
 	}
 
-	err = walk.WalkTweetsWithCallback(ctx, tweets_fh, cb)
+	opts := &walk.WalkWithCallbackOptions{
+		Callback: cb,
+	}
+
+	err = walk.WalkTweetsWithCallback(ctx, opts, tweets_fh)
 
 	if err != nil {
 		log.Fatal(err)
