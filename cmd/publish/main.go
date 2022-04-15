@@ -3,12 +3,12 @@ package main
 import (
 	"context"
 	"flag"
-	"github.com/sfomuseum/go-sfomuseum-export"
+	_ "github.com/sfomuseum/go-sfomuseum-export/v2"
 	"github.com/sfomuseum/go-sfomuseum-twitter"
 	"github.com/sfomuseum/go-sfomuseum-twitter-publish"
 	"github.com/sfomuseum/go-sfomuseum-twitter/walk"
 	"github.com/whosonfirst/go-reader"
-	_ "github.com/whosonfirst/go-whosonfirst-export/options"
+	"github.com/whosonfirst/go-whosonfirst-export/v2"
 	"github.com/whosonfirst/go-writer"
 	_ "gocloud.dev/blob/fileblob"
 
@@ -57,13 +57,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	exprtr_opts, err := export.NewDefaultOptions()
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	exprtr, err := export.NewSFOMuseumExporter(exprtr_opts)
+	exprtr, err := export.NewExporter(ctx, "sfomuseum://")
 
 	if err != nil {
 		log.Fatal(err)

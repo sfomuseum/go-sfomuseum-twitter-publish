@@ -4,9 +4,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/tidwall/gjson"
-	"github.com/whosonfirst/go-whosonfirst-index"
-	_ "github.com/whosonfirst/go-whosonfirst-index-git"
-	_ "github.com/whosonfirst/go-whosonfirst-index/fs"
+	_ "github.com/whosonfirst/go-whosonfirst-iterate-git/v2"
+	"github.com/whosonfirst/go-whosonfirst-iterate/v2/iterator"
 	"io"
 	"io/ioutil"
 	_ "log"
@@ -19,7 +18,7 @@ func BuildLookup(ctx context.Context, indexer_uri string, indexer_path string) (
 	lookup := new(sync.Map)
 	count := int32(0)
 
-	indexer_cb := func(ctx context.Context, fh io.Reader, args ...interface{}) error {
+	indexer_cb := func(ctx context.Context, path string, fh io.ReadSeeker, args ...interface{}) error {
 
 		body, err := ioutil.ReadAll(fh)
 
@@ -49,13 +48,13 @@ func BuildLookup(ctx context.Context, indexer_uri string, indexer_path string) (
 		return nil
 	}
 
-	indexer, err := index.NewIndexer(indexer_uri, indexer_cb)
+	iter, err := iterator.NewIterator(ctx, indexer_uri, indexer_cb)
 
 	if err != nil {
 		return nil, err
 	}
 
-	err = indexer.IndexPath(indexer_path)
+	err = iter.IterateURIs(ctx, indexer_path)
 
 	if err != nil {
 		return nil, err

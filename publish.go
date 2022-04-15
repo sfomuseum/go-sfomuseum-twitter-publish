@@ -11,7 +11,7 @@ import (
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 	"github.com/whosonfirst/go-reader"
-	"github.com/whosonfirst/go-whosonfirst-export/exporter"
+	"github.com/whosonfirst/go-whosonfirst-export/v2"
 	"github.com/whosonfirst/go-writer"
 	"log"
 	"sync"
@@ -22,7 +22,7 @@ type PublishOptions struct {
 	Lookup   *sync.Map
 	Reader   reader.Reader
 	Writer   writer.Writer
-	Exporter exporter.Exporter
+	Exporter export.Exporter
 }
 
 func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error {
@@ -136,7 +136,7 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 		return err
 	}
 
-	wof_record, err = opts.Exporter.Export(wof_record)
+	wof_record, err = opts.Exporter.Export(ctx, wof_record)
 
 	if err != nil {
 		return err

@@ -3,15 +3,16 @@ package writer
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/natefinch/atomic"
 	"io"
-	"io/ioutil"
+	"math/rand"
 	"net/url"
 	"os"
 	"path/filepath"
 )
 
-type FSWriter struct {
+type FileWriter struct {
 	Writer
 	root      string
 	dir_mode  os.FileMode
@@ -21,14 +22,22 @@ type FSWriter struct {
 func init() {
 
 	ctx := context.Background()
-	err := RegisterWriter(ctx, "fs", NewFSWriter)
 
-	if err != nil {
-		panic(err)
+	schemes := []string{
+		"fs",
+	}
+
+	for _, scheme := range schemes {
+
+		err := RegisterWriter(ctx, scheme, NewFileWriter)
+
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
-func NewFSWriter(ctx context.Context, uri string) (Writer, error) {
+func NewFileWriter(ctx context.Context, uri string) (Writer, error) {
 
 	u, err := url.Parse(uri)
 
@@ -49,7 +58,7 @@ func NewFSWriter(ctx context.Context, uri string) (Writer, error) {
 
 	// check for dir/file mode query parameters here
 
-	wr := &FSWriter{
+	wr := &FileWriter{
 		dir_mode:  0755,
 		file_mode: 0644,
 		root:      root,
@@ -58,52 +67,69 @@ func NewFSWriter(ctx context.Context, uri string) (Writer, error) {
 	return wr, nil
 }
 
-func (wr *FSWriter) Write(ctx context.Context, path string, fh io.ReadCloser) error {
+func (wr *FileWriter) Write(ctx context.Context, path string, fh io.ReadSeeker) (int64, error) {
 
-	abs_path := wr.URI(path)
+	abs_path := wr.WriterURI(ctx, path)
 	abs_root := filepath.Dir(abs_path)
 
-	tmp_file, err := ioutil.TempFile("", filepath.Base(abs_path))
-
-	if err != nil {
-		return err
-	}
-
-	tmp_path := tmp_file.Name()
-	defer os.Remove(tmp_path)
-
-	_, err = io.Copy(tmp_file, fh)
-
-	if err != nil {
-		return err
-	}
-
-	err = tmp_file.Close()
-
-	if err != nil {
-		return err
-	}
-
-	err = os.Chmod(tmp_path, wr.file_mode)
-
-	if err != nil {
-		return err
-	}
-
-	_, err = os.Stat(abs_root)
+	_, err := os.Stat(abs_root)
 
 	if os.IsNotExist(err) {
 
 		err = os.MkdirAll(abs_root, wr.dir_mode)
 
 		if err != nil {
-			return err
+			return 0, err
 		}
 	}
 
-	return atomic.ReplaceFile(tmp_path, abs_path)
+	// So this... we can't do this because of cross-device (filesystem) limitations
+	// under Unix. That is /tmp may be on a different filesystem than abs_path
+	// tmp_file, err := os.CreateTemp("", filepath.Base(abs_path))
+	// tmp_path := tmp_file.Name()
+
+	tmp_suffix := fmt.Sprintf("tmp%d", rand.Int63())
+	tmp_path := fmt.Sprintf("%s.%s", abs_path, tmp_suffix)
+
+	tmp_file, err := os.OpenFile(tmp_path, os.O_RDWR|os.O_CREATE, 0600)
+
+	if err != nil {
+		return 0, err
+	}
+
+	defer os.Remove(tmp_path)
+
+	b, err := io.Copy(tmp_file, fh)
+
+	if err != nil {
+		return 0, err
+	}
+
+	err = tmp_file.Close()
+
+	if err != nil {
+		return 0, err
+	}
+
+	err = os.Chmod(tmp_path, wr.file_mode)
+
+	if err != nil {
+		return 0, err
+	}
+
+	err = atomic.ReplaceFile(tmp_path, abs_path)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return b, nil
 }
 
-func (wr *FSWriter) URI(path string) string {
+func (wr *FileWriter) WriterURI(ctx context.Context, path string) string {
 	return filepath.Join(wr.root, path)
+}
+
+func (wr *FileWriter) Close(ctx context.Context) error {
+	return nil
 }

@@ -1,9 +1,9 @@
 module github.com/whosonfirst/go-writer
 
-go 1.12
+go 1.16
 
 require (
-	github.com/aaronland/go-roster v0.0.1
-	github.com/natefinch/atomic v0.0.0-20150920032501-a62ce929ffcc
-	github.com/whosonfirst/go-whosonfirst-uri v0.1.0 // indirect
+	github.com/aaronland/go-roster v0.0.2
+	github.com/g8rswimmer/error-chain v1.0.0
+	github.com/natefinch/atomic v1.0.1
 )
