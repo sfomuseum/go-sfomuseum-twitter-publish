@@ -16,10 +16,8 @@ go build -mod vendor -o bin/publish cmd/publish/main.go
 ```
 > ./bin/publish -h
 Usage of ./bin/publish:
-  -indexer-path string
-    	... (default "git@github.com:sfomuseum-data/sfomuseum-data-twitter.git")
-  -indexer-uri string
-    	A valid whosonfirst/go-whosonfirst-index URI (default "git://")
+  -iterator-uri string
+    	A valid whosonfirst/go-whosonfirst-index URI (default "repo://")
   -reader-uri string
     	A valid whosonfirst/go-reader URI
   -trim-prefix
@@ -38,9 +36,9 @@ For example:
 $> bin/publish \
 	-reader-uri fs:///usr/local/data/sfomuseum-data-twitter/data \
 	-writer-uri fs:///usr/local/data/sfomuseum-data-twitter/data \
-	-indexer-uri directory \
-	-indexer-path /usr/local/data/sfomuseum-data-twitter/data \
-	-tweets-uri file:///usr/local/data/twitter/data/tweet.js
+	-iterator-uri repo:// \
+	-tweets-uri file:///usr/local/data/twitter/data/tweet.js \
+	/usr/local/data/sfomuseum-data-twitter/data
 ```
 
 ## See also

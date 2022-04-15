@@ -7,7 +7,6 @@ import (
 	_ "github.com/whosonfirst/go-whosonfirst-iterate-git/v2"
 	"github.com/whosonfirst/go-whosonfirst-iterate/v2/iterator"
 	"io"
-	"io/ioutil"
 	_ "log"
 	"sync"
 	"sync/atomic"
@@ -20,10 +19,10 @@ func BuildLookup(ctx context.Context, indexer_uri string, indexer_path string) (
 
 	indexer_cb := func(ctx context.Context, path string, fh io.ReadSeeker, args ...interface{}) error {
 
-		body, err := ioutil.ReadAll(fh)
+		body, err := io.ReadAll(fh)
 
 		if err != nil {
-			return err
+			return fmt.Errorf("Failed to read %s, %w", path, err)
 		}
 
 		wof_rsp := gjson.GetBytes(body, "properties.wof:id")
@@ -51,13 +50,13 @@ func BuildLookup(ctx context.Context, indexer_uri string, indexer_path string) (
 	iter, err := iterator.NewIterator(ctx, indexer_uri, indexer_cb)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Failed to create new iterator for %s, %w", indexer_uri, err)
 	}
 
 	err = iter.IterateURIs(ctx, indexer_path)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Failed to iterate URIs, %w", err)
 	}
 
 	return lookup, nil
