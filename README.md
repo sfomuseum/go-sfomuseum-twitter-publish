@@ -18,6 +18,8 @@ go build -mod vendor -o bin/publish cmd/publish/main.go
 Usage of ./bin/publish:
   -iterator-uri string
     	A valid whosonfirst/go-whosonfirst-index URI (default "repo://")
+  -iterator-source string
+        ...  		   
   -reader-uri string
     	A valid whosonfirst/go-reader URI
   -trim-prefix
@@ -36,9 +38,9 @@ For example:
 $> bin/publish \
 	-reader-uri fs:///usr/local/data/sfomuseum-data-twitter/data \
 	-writer-uri fs:///usr/local/data/sfomuseum-data-twitter/data \
-	-iterator-uri repo:// \
 	-tweets-uri file:///usr/local/data/twitter/data/tweet.js \
-	/usr/local/data/sfomuseum-data-twitter/data
+	-iterator-uri repo:// \
+	-iterator-source /usr/local/data/sfomuseum-data-twitter/data
 ```
 
 ## See also
