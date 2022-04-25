@@ -155,8 +155,6 @@ github.com/sfomuseum/go-edtf/re
 github.com/sfomuseum/go-edtf/tests
 # github.com/sfomuseum/go-sfomuseum-export v0.2.4
 ## explicit
-github.com/sfomuseum/go-sfomuseum-export
-github.com/sfomuseum/go-sfomuseum-export/properties
 # github.com/sfomuseum/go-sfomuseum-export/v2 v2.3.6
 ## explicit
 github.com/sfomuseum/go-sfomuseum-export/v2
@@ -197,10 +195,6 @@ github.com/whosonfirst/go-reader
 github.com/whosonfirst/go-whosonfirst-crawl
 # github.com/whosonfirst/go-whosonfirst-export v0.4.0
 ## explicit
-github.com/whosonfirst/go-whosonfirst-export
-github.com/whosonfirst/go-whosonfirst-export/exporter
-github.com/whosonfirst/go-whosonfirst-export/options
-github.com/whosonfirst/go-whosonfirst-export/properties
 # github.com/whosonfirst/go-whosonfirst-export/v2 v2.4.2
 ## explicit
 github.com/whosonfirst/go-whosonfirst-export/v2
