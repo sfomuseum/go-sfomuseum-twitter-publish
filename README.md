@@ -46,4 +46,3 @@ $> bin/publish \
 ## See also
 
 * https://github.com/sfomuseum/go-sfomuseum-twitter
-* https://github.com/sfomuseum-data/sfomuseum-data-twitter
