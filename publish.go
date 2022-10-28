@@ -7,12 +7,12 @@ import (
 	_ "fmt"
 	sfom_reader "github.com/sfomuseum/go-sfomuseum-reader"
 	"github.com/sfomuseum/go-sfomuseum-twitter/document"
-	sfom_writer "github.com/sfomuseum/go-sfomuseum-writer"
+	sfom_writer "github.com/sfomuseum/go-sfomuseum-writer/v3"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 	"github.com/whosonfirst/go-reader"
 	"github.com/whosonfirst/go-whosonfirst-export/v2"
-	"github.com/whosonfirst/go-writer"
+	"github.com/whosonfirst/go-writer/v3"
 	"log"
 	"sync"
 	"time"
@@ -142,7 +142,7 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 		return err
 	}
 
-	id, err := sfom_writer.WriteFeatureBytes(ctx, opts.Writer, wof_record)
+	id, err := sfom_writer.WriteBytes(ctx, opts.Writer, wof_record)
 
 	if err != nil {
 		return err

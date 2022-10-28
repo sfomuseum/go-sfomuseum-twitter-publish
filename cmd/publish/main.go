@@ -9,7 +9,7 @@ import (
 	"github.com/sfomuseum/go-sfomuseum-twitter/walk"
 	"github.com/whosonfirst/go-reader"
 	"github.com/whosonfirst/go-whosonfirst-export/v2"
-	"github.com/whosonfirst/go-writer"
+	"github.com/whosonfirst/go-writer/v3"
 	_ "gocloud.dev/blob/fileblob"
 	"log"
 )
