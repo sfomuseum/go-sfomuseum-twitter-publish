@@ -15,7 +15,7 @@ import (
 	"github.com/tidwall/sjson"
 	"github.com/whosonfirst/go-reader"
 	"github.com/whosonfirst/go-whosonfirst-export/v2"
-	"github.com/whosonfirst/go-writer/v3"	
+	"github.com/whosonfirst/go-writer/v3"
 )
 
 type PublishOptions struct {
@@ -130,19 +130,25 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 		return err
 	}
 
-	wof_record, err = sjson.SetBytes(wof_record, "properties.twitter:tweet", tw)
+	updates := map[string]interface{}{
+		"properties.twitter:tweet": tw,
+	}
+
+	has_changed, new_body, err := export.AssignPropertiesIfChanged(ctx, wof_record, updates)
 
 	if err != nil {
 		return err
 	}
 
-	wof_record, err = opts.Exporter.Export(ctx, wof_record)
+	if !has_changed {
+		return nil
+	}
 
 	if err != nil {
 		return err
 	}
 
-	id, err := sfom_writer.WriteBytes(ctx, opts.Writer, wof_record)
+	id, err := sfom_writer.WriteBytes(ctx, opts.Writer, new_body)
 
 	if err != nil {
 		return err

@@ -2,7 +2,7 @@ package main
 
 import (
 	_ "github.com/sfomuseum/go-sfomuseum-export/v2"
-	_ "gocloud.dev/blob/fileblob"	
+	_ "gocloud.dev/blob/fileblob"
 )
 
 import (
@@ -16,7 +16,6 @@ import (
 	"github.com/whosonfirst/go-reader"
 	"github.com/whosonfirst/go-whosonfirst-export/v2"
 	"github.com/whosonfirst/go-writer/v3"
-
 )
 
 func main() {

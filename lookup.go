@@ -12,7 +12,7 @@ import (
 	"sync/atomic"
 
 	"github.com/tidwall/gjson"
-	"github.com/whosonfirst/go-whosonfirst-iterate/v2/iterator"	
+	"github.com/whosonfirst/go-whosonfirst-iterate/v2/iterator"
 )
 
 func BuildLookup(ctx context.Context, indexer_uri string, indexer_path string) (*sync.Map, error) {
