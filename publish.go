@@ -4,7 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	_ "fmt"
+	"log"
+	"sync"
+	"time"
+
 	sfom_reader "github.com/sfomuseum/go-sfomuseum-reader"
 	"github.com/sfomuseum/go-sfomuseum-twitter/document"
 	sfom_writer "github.com/sfomuseum/go-sfomuseum-writer/v3"
@@ -12,10 +15,7 @@ import (
 	"github.com/tidwall/sjson"
 	"github.com/whosonfirst/go-reader"
 	"github.com/whosonfirst/go-whosonfirst-export/v2"
-	"github.com/whosonfirst/go-writer/v3"
-	"log"
-	"sync"
-	"time"
+	"github.com/whosonfirst/go-writer/v3"	
 )
 
 type PublishOptions struct {

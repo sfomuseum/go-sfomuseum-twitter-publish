@@ -1,17 +1,22 @@
 package main
 
 import (
+	_ "github.com/sfomuseum/go-sfomuseum-export/v2"
+	_ "gocloud.dev/blob/fileblob"	
+)
+
+import (
 	"context"
 	"flag"
-	_ "github.com/sfomuseum/go-sfomuseum-export/v2"
+	"log"
+
 	"github.com/sfomuseum/go-sfomuseum-twitter"
 	"github.com/sfomuseum/go-sfomuseum-twitter-publish"
 	"github.com/sfomuseum/go-sfomuseum-twitter/walk"
 	"github.com/whosonfirst/go-reader"
 	"github.com/whosonfirst/go-whosonfirst-export/v2"
 	"github.com/whosonfirst/go-writer/v3"
-	_ "gocloud.dev/blob/fileblob"
-	"log"
+
 )
 
 func main() {
@@ -59,13 +64,13 @@ func main() {
 	exprtr, err := export.NewExporter(ctx, "sfomuseum://")
 
 	if err != nil {
-		log.Fatalf("Failed to create exportedr, %v", err)
+		log.Fatalf("Failed to create exported, %v", err)
 	}
 
 	lookup, err := publish.BuildLookup(ctx, *iterator_uri, *iterator_source)
 
 	if err != nil {
-		log.Fatalf("Failed to build lookup, %v", err)
+		log.Fatalf("Failed to build lookup for '%s' (%s), %v", *iterator_uri, *iterator_source, err)
 	}
 
 	publish_opts := &publish.PublishOptions{
