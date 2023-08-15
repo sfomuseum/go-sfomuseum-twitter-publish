@@ -5,3 +5,6 @@ cli:
 
 debug:
 	go run -mod $(GOMOD)  cmd/twitter-publish/main.go -reader-uri fs:///usr/local/data/sfomuseum-data-socialmedia-twitter/data -writer-uri fs:///usr/local/data/sfomuseum-data-socialmedia-twitter/data -iterator-uri directory:// -iterator-source /usr/local/data/sfomuseum-data-socialmedia-twitter/data -tweets-uri $(TWEETS)
+
+docker-tweets:
+	docker build --no-cache=true -f Dockerfile -t sfomuseum-twitter-publish .	
