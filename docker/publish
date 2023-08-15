@@ -1,0 +1,192 @@
+#!/bin/sh
+# -*-sh-*-
+
+DATA=/usr/local/data/tmp
+BIN=/usr/local/sfomuseum/bin
+
+GIT=`which git`
+
+SOURCE_BUCKET=
+SOURCE_KEY=
+AWS_CREDENTIALS=
+GITHUB_ORG=sfomuseum-data
+GITHUB_REPO=sfomuseum-data-socialmedia-twitter
+GITHUB_BRANCH=dev
+GITHUB_USER=
+GITHUB_TOKEN_URI=
+
+HELP=0
+
+while getopts "b:c:k:o:r:s:t:u:h" opt; do
+    echo "-$opt = $OPTARG"
+    case "$opt" in
+	b)
+	    GITHUB_BRANCH=$OPTARG
+	    ;;
+	c )
+	    AWS_CREDENTIALS=$OPTARG
+	    ;;
+	h)
+	    HELP=1	    
+	    ;;
+	k )
+	    SOURCE_KEY=$OPTARG
+	    ;;	
+	o )
+	    GITHUB_ORG=$OPTARG
+	    ;;
+	r )
+	    GITHUB_REPO=$OPTARG
+	    ;;
+	s )
+	    SOURCE_BUCKET=$OPTARG
+	    ;;
+	t )
+	    GITHUB_TOKEN_URI=$OPTARG
+	    ;;
+	u )
+	    GITHUB_USER=$OPTARG
+	    ;;
+	: )
+	    echo "WHAT"
+	    ;;
+    esac
+done
+
+if [ ${HELP} == 1 ]
+then
+    echo "Print usage"
+    exit 0
+fi
+
+if [ "${GITHUB_BRANCH}" == "" ]
+then
+    echo "Missing GitHub branch (-b)"
+    exit 1
+fi
+
+if [ "${AWS_CREDENTIALS}" == "" ]
+then
+    echo "Missing AWS credentials (-c)"
+    exit 1
+fi
+
+if [ "${SOURCE_KEY}" == "" ]
+then
+    echo "Missing source key (-k)"
+    exit 1
+fi
+
+if [ "${GITHUB_ORG}" == "" ]
+then
+    echo "Missing GitHub organization (-o)"
+    exit 1
+fi
+
+if [ "${GITHUB_REPO}" == "" ]
+then
+    echo "Missing GitHub repo (-r)"
+    exit 1
+fi
+
+if [ "${SOURCE_BUCKET}" == "" ]
+then
+    echo "Missing source bucket (-s)"
+    exit 1
+fi
+
+if [ "${GITHUB_TOKEN_URI}" == "" ]
+then
+    echo "Missing GitHub API access token URI (-t)"
+    exit 1
+fi
+
+if [ "${GITHUB_USER}" == "" ]
+then
+    echo "Missing GitHub user (-u)"
+    exit 1
+fi
+
+TARGET_BUCKET=file://${DATA}
+
+ARCHIVE=`echo ${SOURCE_KEY} | sed 's/\.zip//'`
+
+# GitHub token
+
+GITHUB_TOKEN=`${BIN}/runtimevar "${GITHUB_TOKEN_URI}"`
+
+if [ "${GITHUB_TOKEN}" = "" ]
+then
+    echo "Unable to determine GitHub token"
+    exit 1
+fi
+
+# Copy to archive (n)
+
+${BIN}/copy \
+      -source-uri ${SOURCE_BUCKET} \
+      -source-path ${SOURCE_KEY} \
+      -target-uri ${TARGET_BUCKET} \
+      -target-path ${SOURCE_KEY}
+
+if [ $? != 0 ]
+then
+    echo "Failed to copy archive"
+    exit 1
+fi
+
+# Unzip archive
+
+unzip ${DATA}/${SOURCE_KEY} -d ${DATA}
+
+if [ $? != 0 ]
+then
+    echo "Failed to unzip archive"
+    exit 1
+fi
+
+# Clone repo
+
+GITHUB_CREDS="${GITHUB_USER}:${GITHUB_TOKEN}"
+
+${GIT} clone https://${GITHUB_CREDS}@github.com/${GITHUB_ORG}/${GITHUB_REPO}.git ${DATA}/${GITHUB_REPO}
+
+if [ $? != 0 ]
+then
+    echo "Failed to clone repo"
+    exit 1
+fi
+
+cd ${DATA}/${GITHUB_REPO}
+${GIT} checkout -b ${GITHUB_BRANCH}
+cd -
+
+# Run publish tool
+
+${BIN}/twitter-publish \
+	-reader-uri repo://${DATA}/${GITHUB_REPO} \
+	-writer-uri repo://${DATA}/${GITHUB_REPO} \
+	-iterator-uri repo:// \
+	-iterator-source ${DATA}/${GITHUB_REPO} \
+	-tweets-uri file://${DATA}/${ARCHIVE}/data/tweets.js
+
+if [ $? != 0 ]
+then
+    echo "Failed to publish archive"
+    exit 1
+fi
+
+# Commit changes
+
+cd ${DATA}/${GITHUB_REPO}
+
+git add data
+git commit -m "Update Twitter archive" .
+
+git push origin ${GITHUB_BRANCH}
+
+if [ $? != 0 ]
+then
+    echo "Failed to commit archive"
+    exit 1
+fi
