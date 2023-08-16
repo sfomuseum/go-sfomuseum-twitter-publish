@@ -8,7 +8,6 @@ GIT=`which git`
 
 SOURCE_BUCKET=
 SOURCE_KEY=
-AWS_CREDENTIALS=
 GITHUB_ORG=sfomuseum-data
 GITHUB_REPO=sfomuseum-data-socialmedia-twitter
 GITHUB_BRANCH=dev
@@ -17,14 +16,11 @@ GITHUB_TOKEN_URI=
 
 HELP=0
 
-while getopts "b:c:k:o:r:s:t:u:h" opt; do
+while getopts "b:k:o:r:s:t:u:h" opt; do
     echo "-$opt = $OPTARG"
     case "$opt" in
 	b)
 	    GITHUB_BRANCH=$OPTARG
-	    ;;
-	c )
-	    AWS_CREDENTIALS=$OPTARG
 	    ;;
 	h)
 	    HELP=1	    
@@ -62,12 +58,6 @@ fi
 if [ "${GITHUB_BRANCH}" == "" ]
 then
     echo "Missing GitHub branch (-b)"
-    exit 1
-fi
-
-if [ "${AWS_CREDENTIALS}" == "" ]
-then
-    echo "Missing AWS credentials (-c)"
     exit 1
 fi
 
