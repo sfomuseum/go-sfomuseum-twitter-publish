@@ -29,8 +29,9 @@ FROM alpine
 RUN mkdir /usr/local/data
 RUN mkdir -p /usr/local/sfomuseum/bin
 
-RUN apk update && apk upgrade
-
+RUN apk update && apk upgrade \
+    && apk add git
+    
 COPY --from=gotools /usr/local/bin/copy /usr/local/sfomuseum/bin/copy
 COPY --from=gotools /usr/local/bin/runtimevar /usr/local/sfomuseum/bin/runtimevar
 COPY --from=gotools /usr/local/bin/twitter-publish /usr/local/sfomuseum/bin/twitter-publish
