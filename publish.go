@@ -134,6 +134,20 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 		"properties.twitter:tweet": tw,
 	}
 
+	// Denormalize hash tags in to something that easier to facet
+
+	hashtags := make([]string, 0)
+	
+	for _, r := range gjson.GetBytes(tweet_body, "entities.hashtags").Array() {
+
+		t := r.Get("text")
+		hashtags = append(hashtags, t.String())
+	}
+
+	updates["twitter:hashtags"] = hashtags
+	
+	//
+	
 	has_changed, new_body, err := export.AssignPropertiesIfChanged(ctx, wof_record, updates)
 
 	if err != nil {
