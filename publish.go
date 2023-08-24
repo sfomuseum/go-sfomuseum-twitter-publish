@@ -134,6 +134,48 @@ func PublishTweet(ctx context.Context, opts *PublishOptions, body []byte) error 
 		"properties.twitter:tweet": tw,
 	}
 
+	// Denormalize hash tags in to something that easier to facet
+
+	hashtags_lookup := new(sync.Map)
+	hashtags := make([]string, 0)
+
+	for _, r := range gjson.GetBytes(tweet_body, "entities.hashtags").Array() {
+
+		t := r.Get("text")
+		hashtags_lookup.Store(t.String(), true)
+	}
+
+	hashtags_lookup.Range(func(k interface{}, v interface{}) bool {
+		hashtags = append(hashtags, k.(string))
+		return true
+	})
+
+	if len(hashtags) > 0 {
+		updates["properties.twitter:hashtags"] = hashtags
+	}
+
+	// Denormalize user mentions in to something that easier to facet
+
+	mentions_lookup := new(sync.Map)
+	mentions := make([]string, 0)
+
+	for _, r := range gjson.GetBytes(tweet_body, "entities.user_mentions").Array() {
+
+		n := r.Get("screen_name")
+		mentions_lookup.Store(n.String(), true)
+	}
+
+	mentions_lookup.Range(func(k interface{}, v interface{}) bool {
+		mentions = append(mentions, k.(string))
+		return true
+	})
+
+	if len(mentions) > 0 {
+		updates["properties.twitter:user_mentions"] = mentions
+	}
+
+	//
+
 	has_changed, new_body, err := export.AssignPropertiesIfChanged(ctx, wof_record, updates)
 
 	if err != nil {
