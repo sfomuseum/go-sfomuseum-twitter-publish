@@ -2,17 +2,17 @@ module github.com/sfomuseum/go-sfomuseum-twitter-publish
 
 go 1.22.1
 
-toolchain go1.22.2
+toolchain go1.22.3
 
 require (
-	github.com/sfomuseum/go-sfomuseum-export/v2 v2.3.8
+	github.com/sfomuseum/go-sfomuseum-export/v2 v2.3.9
 	github.com/sfomuseum/go-sfomuseum-reader v0.0.2
 	github.com/sfomuseum/go-sfomuseum-twitter v0.1.4
 	github.com/sfomuseum/go-sfomuseum-writer/v3 v3.0.2
 	github.com/tidwall/gjson v1.17.1
 	github.com/tidwall/sjson v1.2.5
 	github.com/whosonfirst/go-reader v1.0.2
-	github.com/whosonfirst/go-whosonfirst-export/v2 v2.7.1
+	github.com/whosonfirst/go-whosonfirst-export/v2 v2.7.2
 	github.com/whosonfirst/go-whosonfirst-iterate-git/v2 v2.1.6
 	github.com/whosonfirst/go-whosonfirst-iterate/v2 v2.4.1
 	github.com/whosonfirst/go-writer/v3 v3.1.1
@@ -38,6 +38,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/cloudflare/circl v1.3.7 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
+	github.com/dominikbraun/graph v0.16.1 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/g8rswimmer/error-chain v1.0.0 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
@@ -53,7 +54,7 @@ require (
 	github.com/mmcloughlin/geohash v0.10.0 // indirect
 	github.com/natefinch/atomic v1.0.1 // indirect
 	github.com/paulmach/go.geojson v1.4.0 // indirect
-	github.com/paulmach/orb v0.10.0 // indirect
+	github.com/paulmach/orb v0.11.1 // indirect
 	github.com/pjbgf/sha1cd v0.3.0 // indirect
 	github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3 // indirect
 	github.com/sfomuseum/go-edtf v1.1.1 // indirect
@@ -65,13 +66,13 @@ require (
 	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/whosonfirst/go-ioutil v1.0.2 // indirect
 	github.com/whosonfirst/go-whosonfirst-crawl v0.2.2 // indirect
-	github.com/whosonfirst/go-whosonfirst-feature v0.0.26 // indirect
-	github.com/whosonfirst/go-whosonfirst-flags v0.4.4 // indirect
+	github.com/whosonfirst/go-whosonfirst-feature v0.0.27 // indirect
+	github.com/whosonfirst/go-whosonfirst-flags v0.5.1 // indirect
 	github.com/whosonfirst/go-whosonfirst-format v0.4.1 // indirect
 	github.com/whosonfirst/go-whosonfirst-geojson-v2 v0.16.3 // indirect
 	github.com/whosonfirst/go-whosonfirst-hash v0.1.0 // indirect
 	github.com/whosonfirst/go-whosonfirst-id v1.2.2 // indirect
-	github.com/whosonfirst/go-whosonfirst-placetypes v0.3.0 // indirect
+	github.com/whosonfirst/go-whosonfirst-placetypes v0.7.0 // indirect
 	github.com/whosonfirst/go-whosonfirst-sources v0.1.0 // indirect
 	github.com/whosonfirst/go-whosonfirst-spr/v2 v2.0.0 // indirect
 	github.com/whosonfirst/go-whosonfirst-uri v1.3.0 // indirect
