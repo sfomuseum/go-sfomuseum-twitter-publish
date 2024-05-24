@@ -220,7 +220,7 @@ github.com/sfomuseum/go-edtf/level2
 github.com/sfomuseum/go-edtf/parser
 github.com/sfomuseum/go-edtf/re
 github.com/sfomuseum/go-edtf/tests
-# github.com/sfomuseum/go-sfomuseum-export/v2 v2.3.9
+# github.com/sfomuseum/go-sfomuseum-export/v2 v2.3.10
 ## explicit; go 1.22
 github.com/sfomuseum/go-sfomuseum-export/v2
 github.com/sfomuseum/go-sfomuseum-export/v2/properties
@@ -268,7 +268,7 @@ github.com/whosonfirst/go-reader
 # github.com/whosonfirst/go-whosonfirst-crawl v0.2.2
 ## explicit; go 1.18
 github.com/whosonfirst/go-whosonfirst-crawl
-# github.com/whosonfirst/go-whosonfirst-export/v2 v2.7.2
+# github.com/whosonfirst/go-whosonfirst-export/v2 v2.8.0
 ## explicit; go 1.22
 github.com/whosonfirst/go-whosonfirst-export/v2
 github.com/whosonfirst/go-whosonfirst-export/v2/properties
@@ -393,7 +393,7 @@ golang.org/x/crypto/ssh/knownhosts
 # golang.org/x/mod v0.12.0
 ## explicit; go 1.17
 golang.org/x/mod/semver
-# golang.org/x/net v0.23.0
+# golang.org/x/net v0.22.0
 ## explicit; go 1.18
 golang.org/x/net/context
 golang.org/x/net/http/httpguts

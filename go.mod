@@ -5,14 +5,14 @@ go 1.22.1
 toolchain go1.22.3
 
 require (
-	github.com/sfomuseum/go-sfomuseum-export/v2 v2.3.9
+	github.com/sfomuseum/go-sfomuseum-export/v2 v2.3.10
 	github.com/sfomuseum/go-sfomuseum-reader v0.0.2
 	github.com/sfomuseum/go-sfomuseum-twitter v0.1.4
 	github.com/sfomuseum/go-sfomuseum-writer/v3 v3.0.2
 	github.com/tidwall/gjson v1.17.1
 	github.com/tidwall/sjson v1.2.5
 	github.com/whosonfirst/go-reader v1.0.2
-	github.com/whosonfirst/go-whosonfirst-export/v2 v2.7.2
+	github.com/whosonfirst/go-whosonfirst-export/v2 v2.8.0
 	github.com/whosonfirst/go-whosonfirst-iterate-git/v2 v2.1.6
 	github.com/whosonfirst/go-whosonfirst-iterate/v2 v2.4.1
 	github.com/whosonfirst/go-writer/v3 v3.1.1
@@ -85,7 +85,7 @@ require (
 	go.uber.org/ratelimit v0.3.0 // indirect
 	golang.org/x/crypto v0.21.0 // indirect
 	golang.org/x/mod v0.12.0 // indirect
-	golang.org/x/net v0.23.0 // indirect
+	golang.org/x/net v0.22.0 // indirect
 	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.13.0 // indirect
