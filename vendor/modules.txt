@@ -241,7 +241,7 @@ github.com/skeema/knownhosts
 # github.com/skelterjohn/geom v0.0.0-20180103142417-96f3e8a219c5
 ## explicit
 github.com/skelterjohn/geom
-# github.com/tidwall/gjson v1.17.3
+# github.com/tidwall/gjson v1.18.0
 ## explicit; go 1.12
 github.com/tidwall/gjson
 # github.com/tidwall/match v1.1.1
@@ -358,7 +358,7 @@ go.opencensus.io/trace/tracestate
 # go.uber.org/ratelimit v0.3.0
 ## explicit; go 1.18
 go.uber.org/ratelimit
-# gocloud.dev v0.39.0
+# gocloud.dev v0.40.0
 ## explicit; go 1.21.0
 gocloud.dev/blob
 gocloud.dev/blob/driver

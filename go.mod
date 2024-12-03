@@ -7,14 +7,14 @@ require (
 	github.com/sfomuseum/go-sfomuseum-reader v0.0.2
 	github.com/sfomuseum/go-sfomuseum-twitter v0.1.4
 	github.com/sfomuseum/go-sfomuseum-writer/v3 v3.0.3
-	github.com/tidwall/gjson v1.17.3
+	github.com/tidwall/gjson v1.18.0
 	github.com/tidwall/sjson v1.2.5
 	github.com/whosonfirst/go-reader v1.0.2
 	github.com/whosonfirst/go-whosonfirst-export/v2 v2.8.3
 	github.com/whosonfirst/go-whosonfirst-iterate-git/v2 v2.1.7
 	github.com/whosonfirst/go-whosonfirst-iterate/v2 v2.5.0
 	github.com/whosonfirst/go-writer/v3 v3.1.1
-	gocloud.dev v0.39.0
+	gocloud.dev v0.40.0
 )
 
 require (
