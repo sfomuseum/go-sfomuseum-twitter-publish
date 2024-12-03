@@ -5,7 +5,7 @@ go 1.23
 require (
 	github.com/sfomuseum/go-sfomuseum-export/v2 v2.3.11
 	github.com/sfomuseum/go-sfomuseum-reader v0.0.2
-	github.com/sfomuseum/go-sfomuseum-twitter v0.1.4
+	github.com/sfomuseum/go-sfomuseum-twitter v0.1.5
 	github.com/sfomuseum/go-sfomuseum-writer/v3 v3.0.3
 	github.com/tidwall/gjson v1.18.0
 	github.com/tidwall/sjson v1.2.5
