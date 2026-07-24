@@ -1,5 +1,9 @@
 # go-sfomuseum-twitter-publish
 
+## Deprecation Notice
+
+This package has been deprecated. Please use [sfomuseum/go-sfomuseum/twitter/publish](https://github.com/sfomuseum/go-sfomuseum) instead.
+
 ## Work in progress
 
 Documentation to follow.
